@@ -1,0 +1,266 @@
+<script type="text/javascript">
+
+	window.onbeforeunload = function(){
+		if(inter!=null)
+		clearInterval(inter);
+	}
+
+	var inter = null;
+
+	var elem = document.querySelector('.grid');
+	var msnry = new Masonry( elem, {
+	  // options
+	  itemSelector: '.grid-item',
+	  gutter:40,
+	  isFitWidth : true
+	});
+
+	class Particle{
+		constructor(x, y, r, max) {
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.age = 0;
+			this.max = max;
+		}
+	}
+
+	
+		
+	ctx = document.getElementById("anim-background").getContext("2d");
+	var particles = [];
+
+	var birthrate = 2;
+	var birthtime = 30/birthrate;
+	var birthtimer = 0;
+
+	if(document.animLoaded == undefined){
+		
+		document.animLoaded = true;
+		inter = setInterval(function(){
+			class Particle{
+				constructor(x, y, r, max) {
+					this.x = x;
+					this.y = y;
+					this.r = r;
+					this.age = 0;
+					this.max = max;
+				}
+			}
+
+			ctx.clearRect(0,0,400,200);
+
+			//birth
+			birthtimer ++;
+			if(birthtimer >= birthtime){
+				birthtimer = 0;
+				var pa = new Particle(
+					Math.random() * 380 + 10, 
+					Math.random() * 180 + 10,
+					Math.random() * 3 + 3,
+					Math.random() * 30 + 120);
+				particles.push(pa);
+			}
+
+			var i = particles.length;
+			while(i--){
+				var p = particles[i];
+
+				if(p.age>p.max){
+					particles.splice(i,1);
+					continue;
+				}
+
+				p.age++;
+				ctx.beginPath();
+		    	ctx.arc(p.x, p.y, p.r * 0.5 + (p.age/p.max), 0, 2 * Math.PI, false);
+		    	if(p.age < p.max/2){
+		    		ctx.fillStyle = "rgba(255,255,255,"+ 0.6*p.age/p.max +")";
+		    	}else{
+		    		ctx.fillStyle = "rgba(255,255,255,"+ 0.6*(1-p.age/p.max) +")";
+		    	}
+		    	ctx.fill();
+		    	ctx.lineWidth = 0;
+		    	ctx.strokeStyle = "rgba(0,0,0,0)";
+		    	ctx.stroke();
+			}
+
+		},33);
+	}
+</script>
+
+<div class="home-container">
+	<div class="banner">
+	  <div class="banner-content wow fadeIn">
+	  	<canvas id="anim-background" width="400" height="200"></canvas>
+	    <h2 class="">Oliver Xu</h2>
+	    <h6>⋲ Developer ⋂ Artist</h6>
+	    <span>
+	    	Well rounded developer
+	    	<br/>
+	    	Scroll down to see more
+	    </span>
+	    <br/>
+	    <br/>
+	    <span>
+	    	<a href="/res_distributable.pdf" target="_blank">
+	      		<div >Resume</div>
+	      	</a>
+	      	<div ui-sref="about" ui-sref-active="active">Contact</div>
+	    </span>
+	  </div>
+	</div>
+	<div class="resume">
+		<!--article-->
+		<div class="grid">
+			<div class="contact-header grid-item wow fadeIn">
+				<h2>Oliver Xu</h2>
+				<br style="clear:both;">
+				<strong>University of Waterloo </strong>
+				<br>
+				B. Math Computer Science and Combinatorics/Optimization Double Major, Minor in Psychology
+				<br>
+				Expected Graduation: Winter 2018
+
+			</div>
+
+			<div class="overview grid-item wow fadeIn">
+				<h2>Overview</h2>
+				<ul>
+					<li>Well rounded full stack developer in areas, including web, mobile, native, and game development</li>
+					<li>Developer who is mindful of code quality, safety, and software architecture.</li>
+					<li>Full stack web app and website development, both front end and back</li>
+					<li>Mobile application development using web and native frameworks</li>
+					<li>Experienced in game engine development, foundation for performance optimization and graphics</li>
+					<li>Proficient in use of Linux/Unix for development uses and general uses</li>
+					<li>Strong mathematics, algorithms and combinatorics background</li>
+					<li>Resourceful and able to rapidly adapt to new tools and environments</li>
+				</ul>
+
+				
+			</div>
+
+			<div class="capcom grid-item wow fadeIn">
+				<h2>Capcom</h2>
+				<h4>Vancouver, Winter 2016</h4>
+				<h3>Gameplay Engineer Intern</h3>
+				<ul>			
+					<li>Optimized memory access to be more cache coherent, by writing an algorithm that traverses the entire game data tree, computes required optimizations and reparations, and commits 				the changes to the game data</li>
+					<li>Reduced execution time by 1 ms (3% of maximum acceptable time) per frame as a result of the  optimization </li>
+					<li>Reduced memory usage hundred of megabytes by finding obscure errors like unexpected integer overflow</li>
+					<li>Built a small multiplayer prototype using Unity in a week</li>
+					<li>Participated in 2 game jams with Capcom</li>
+					<li>C, C++, C#, .NET, Visual Studio, Perforce</li>
+				</ul>
+			</div>
+			
+			<div class="axiom-zen grid-item wow fadeIn">
+				<h2>Axiom Zen</h2>
+				<h4>Vancouver, Summer 2015</h4>
+				<h3>Software Developer Intern</h3>
+				<ul>			
+					<li>(Context: NED is the machine learning problem of differentiating Michael Jackson from Michael Jordan when only “Michael” or “MJ” is mentioned in the text)</li>
+					<li>Generated statistics and data required for a machine learning algorithm to perform Named Entity Disambiguation (NED) by doing research on various topics and designing/implementing the solution</li>
+					<li>Increased NED accuracy by implementing various existing lexical and semantic techniques, using public data sets such as WordNet, and customizing them to suit our needs</li>
+					<li>Designed and developed methods for parsing and indexing the texts of Wikipedia using just 32 GB of memory by manually inspecting the official dumps and understanding its structure</li>
+					<li>Showed that our NED product outperforms current solutions by at least 5% by developing a graphical application that visualizes the NED database using a graph and calculates the accuracy of the data.</li>
+					<li>Java, OrientDB, Wikipedia, WordNet, AIDA, NLP</li>
+				</ul>
+			</div>
+
+			<div class="blackberry grid-item wow fadeIn">
+				<h2>Blackberry</h2>
+				<h4>Waterloo, Summer 2014</h4>
+				<h3>Software Developer Intern</h3>
+				<ul>			
+					<li>Designed and implemented feature that records and plays back 3D motion of the device emulator</li>
+					<li>Implemented features to help collect data about battery usage of Bluetooth and music</li>
+					<li>C, C++, Python</li>
+				</ul>
+			</div>
+
+			<div class="personal-website grid-item project wow fadeIn">
+				<h2>Personal Website</h2>
+				<h4>Winter 2017</h4>
+				<h3><a href='https://oxu.design/#/home' target="_blank">Visit</a></h3>
+				<p>
+					This website was an endeavour to learn various aspects of web development. I set up the website completely from the ground up, including installing and configuring a webserver on a linux instance, purchasing a domain name, and building both the front and back end of the website itself using Meteor.js. 
+				</p>
+			</div>
+
+			<div class="shooter-engine grid-item project wow fadeIn">
+				<h2>Shooter Engine 2.0</h2>
+				<h4>Fall 2016</h4>
+				<h3><a ui-sref="shooter" ui-sref-active="active">Visit</a></h3>
+				<p>
+					This more serious project is a fast and extensible shooter entity component game engine, version 2 of the original shooter engine which is now deprecated. It is a complete port from hxsl to glsl, which means now the game can be compiled to mobile platforms and Windows/OSX/Linux just by using a different command.
+				</p>
+				<ul>
+					<li>Improved lighting performance by O(n) by designing algorithm that takes advantage of the stencil buffer</li>
+					<li>Implemented cheap breadcrumbs AI that allows thousands of agents chasing smoothly, simultaneously</li>
+					<li>Implemented custom collision engine based on the separating axis theorem</li>
+				</ul>
+			</div>
+
+			<div class="foodie-app grid-item project wow fadeIn">
+				<h2>Foodie App</h2>
+				<h4>Winter 2016</h4>
+				<h3><a href='/screenshot_foodie.png' target="_blank">Screenie</a></h3>
+				<p>
+					This is an Android app that was inspired by our constant needs as students to run out and get food. Instead of going alone, you use this Tinder-like app to hit up a friend. The real-time matchmaking algorithm is a simplistic version of what multiplayer online games use, accounting for distance and food preference. Made in Meteor.js.
+
+					I only have a screenshot for the project, I temporarily cannot find the project.
+				</p>
+			</div>
+
+			<div class="ghostgear-hunter grid-item project wow fadeIn">
+				<h2>GhostGear Hunter App</h2>
+				<h4>Fishackathon 2</h4>
+				<h3><a href='https://github.com/oxue/meteorfish2016' target="_blank">Visit</a></h3>
+				<p>
+					Me and a couple other hackers put together this app to help fishermen report lost fishing hear and report dangerous ammunition and nuclear dumps. This was made in an effort to help protect ocean wildlife and fishermen alike. Despite the name of the repo, we used React Native and ParseDB.
+				</p>
+			</div>
+
+			<div class="genetic-algorithm grid-item project wow fadeIn">
+				<h2>Genetic Algorithm AI</h2>
+				<h4>Summer 2015</h4>
+				<h3><a href='http://tinyurl.com/genaiavoid' target="_blank">Visit</a></h3>
+				<p>
+					Hold the left mouse button to move, and tap the right mouse button to shoot. The other ships will attempt to dodge (albeit not very successfully). Each ship has a dodging algorithm encoded as a string in their “genes”. Successful genes get passed down to the next generation for breeding and mutation. 
+				</p>
+			</div>
+
+			<div class="sprite-batcher grid-item project wow fadeIn">
+				<h2>OpenGL Sprite Batcher</h2>
+				<h4>Summer 2015</h4>
+				<h3><a href="https://bitbucket.org/worldedit/qbatch/src" target="_blank">Visit</a></h3>
+				<p>
+					A fast opengl framework to draw sprites in 2d games, aimed to have a simplistic api but be very customizable.
+				</p>
+			</div>
+
+			<div class="flash-games grid-item project wow fadeIn">
+				<h2>Flash Games</h2>
+				<h4>High School</h4>
+				<h3><a href="http://www.kongregate.com/games/qwerber/find-the-exit" target="_blank">Visit</a></h3>
+				<p>
+					A collection of old flash games; hope you can have fun playing them as I had fun making them
+					<br>
+					<br>
+					<a href="http://www.ologames.com/Free_Games/Pastel---Shooter"><strong>Pastel</strong></a>
+					<br>
+					<a href="http://www.kongregate.com/games/qwerber/find-the-exit"><strong>Find the Exit</strong></a>
+					<br>
+					<a href="http://www.kongregate.com/games/qwerber/neon-bounce"><strong>Neon Bounce</strong></a>
+				</p>
+			</div> 
+		</div>
+
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</div>
+</div>
