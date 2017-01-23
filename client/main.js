@@ -7,19 +7,23 @@ import shooter from '../imports/components/shooter/shooter';
 import art from '../imports/components/art/art';
 import visitors from '../imports/components/visitors/visitors';
 
+import '../imports/components/home/homeCtrl.js';
+
 new WOW().init();
 
 var app = angular.module('simple-todos', [
   angularMeteor,
   "ui.router",
-  "visitors"
+  "visitors",
+  "ctrlsModule"
 ]);
 
 angular.module('simple-todos').config(["$stateProvider", function($stateProvider){
   var helloState = {
     name: 'home',
     url: '/home',
-    templateUrl: 'imports/components/home/home.html'
+    templateUrl: 'imports/components/home/home.html',
+    controller: 'HomeCtrl'
   }
 
   var aboutState = {
