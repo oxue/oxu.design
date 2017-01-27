@@ -1,8 +1,17 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
-import {Particle} from "./Particle.js";
 
-export default angular.module('ctrlsModule',[angularMeteor]).controller('HomeCtrl',['$scope', function($scope){
+class Particle{
+	constructor(x, y, r, max) {
+		this.x = x;
+		this.y = y;
+		this.r = r;
+		this.age = 0;
+		this.max = max;
+	}
+}
+
+export default angular.module('homeCtrlModule',[angularMeteor]).controller('HomeCtrl',['$scope', function($scope){
 	var inter = null;
 
 	$scope.init = function(){

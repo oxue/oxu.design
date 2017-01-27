@@ -2,12 +2,15 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import uiRouter from 'angular-ui-router';
 import home from '../imports/components/home/home';
+import gen from '../imports/components/gen/gen';
 import about from '../imports/components/about/about';
 import shooter from '../imports/components/shooter/shooter';
 import art from '../imports/components/art/art';
 import visitors from '../imports/components/visitors/visitors';
 
+
 import '../imports/components/home/homeCtrl.js';
+import '../imports/components/gen/genCtrl.js';
 
 new WOW().init();
 
@@ -15,13 +18,14 @@ var app = angular.module('simple-todos', [
   angularMeteor,
   "ui.router",
   "visitors",
-  "ctrlsModule"
+  "genCtrlModule",
+  "homeCtrlModule"
 ]);
 
 angular.module('simple-todos').config(["$stateProvider", function($stateProvider){
   var helloState = {
     name: 'home',
-    url: '/home',
+    url: '*path',
     templateUrl: 'imports/components/home/home.html',
     controller: 'HomeCtrl'
   }
@@ -44,10 +48,19 @@ angular.module('simple-todos').config(["$stateProvider", function($stateProvider
     templateUrl: 'imports/components/art/art.html'
   }
 
-  $stateProvider.state(helloState);
+  var genState = {
+    name: 'gen',
+    url: '/gen',
+    templateUrl: 'imports/components/gen/gen.html',
+    controller: 'GenCtrl'
+  }
+
   $stateProvider.state(aboutState);
   $stateProvider.state(shooterState);
   $stateProvider.state(artState);
+  $stateProvider.state(genState);
+  $stateProvider.state(helloState);
+
 
 }]);
 

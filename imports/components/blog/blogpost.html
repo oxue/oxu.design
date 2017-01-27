@@ -1,0 +1,13 @@
+<div class="blog-post">
+
+<h1 ng-bind="$ctrl.title"></h1>
+
+  <div ng-bind-html="$ctrl.content">
+  </div>
+
+  <div ng-include="$ctrl.temp">
+  </div>
+
+  <br>
+  <span class='posted-on'>Posted on : <span ng-bind="$ctrl.date"></span> </span>
+</div>
