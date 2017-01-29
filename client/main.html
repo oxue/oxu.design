@@ -1,18 +1,24 @@
 <head>
-  <title>Oliver Xu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-  <link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
-  <script type="text/javascript">
-  	function myFunction() {
-	    var x = document.getElementById("mynav");
-	    if (x.className === "navigation-bar") {
-	        x.className += " responsive";
-	    } else {
-	        x.className = "navigation-bar";
-	    }
-	}
-  </script>
+	<title>Oliver Xu</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
+	<script type="text/javascript">
+		function myFunction() {
+	    	var x = document.getElementById("mynav");
+		    if (x.className === "navigation-bar") {
+		        x.className += " responsive";
+		    } else {
+		        x.className = "navigation-bar";
+		    }
+		}
+	</script>
+	<!--script type="text/x-mathjax-config">
+  		MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+	</script-->
+	<script type="text/javascript" async
+	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+	</script>
 </head>
 <body>
   <div class="container" ng-app="simple-todos" ng-strict-di>
@@ -23,7 +29,7 @@
       	<li><a ui-sref="about" ui-sref-active="active">ABOUT</a></li>
       	<li><a ui-sref="shooter" ui-sref-active="active">SHOOTER</a></li>
       	<li><a ui-sref="art" ui-sref-active="active">ART</a></li>
-      	<li><a ui-sref="gen" ui-sref-active="active">GEN<sub>WIP</sub></a></li>
+      	<li><a ui-sref="gen" ui-sref-active="active">GEN<small>WIP</small></a></li>
       	<li class="icon">
     		<a href="javascript:void(0);" onclick="myFunction()">&#9776;</a>
   		</li>

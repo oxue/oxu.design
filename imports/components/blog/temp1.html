@@ -1,9 +1,169 @@
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8hsho13-_Es" frameborder="0" allowfullscreen></iframe>
+
+<h2> Introduction </h2>
+
 <p>
-Hello
-Hello
-Hello
-Hello
-Hello
-Hello
-Hello
+A while ago I started a project to see if I can ACTUALLY apply what little I know about <stong>machine learning</stong> (the trendiest buzzword among us UW students) to do something fun. This is a rigorous successor to my <a href="https://dl.dropboxusercontent.com/u/17828135/gen/gen.swf"><strong>previous genetic AI project</strong></a>. Of course, I am hoping I can learn more about machine learning through this process.
+</p>
+
+<p>
+So where am I now? So far, I have set up the test bed and necessary boiler plate. 
+</p>
+
+<h2>The Simulation</h2>
+
+<p>
+The simulation I decided to implement is as follows: agents in the simulation called <i>boids</i> which will be represeted graphically as small triangles must trying to survive as long as possible without being eaten by the predator which we'll call a <i>big boid</i>. The big boid is represented graphically as a giant black dot. 
+</p>
+<h3>Boids</h3>
+<img src="/boids.png">
+
+<p>
+A boid can perform the following actions: 
+<ol>
+	<li>
+	Accelerate at a constance speed.
+	</li>
+	<li>
+	Don't accelerate at a constance acceleration.
+	</li>
+	<li>
+	Turn left at constant angular speed.
+	</li>
+	<li>
+	Turn right at constant angular speed.
+	</li>
+	<li>
+	Don't turn at all, and just head straight.
+	</li>
+</ol>
+
+The set decisions that a boid can take at any given moment can be formalized as all the tuples
+
+$$
+D = \{(a, s):a\in\{0,1\},b\in\{-1,0,-1\}\}
+$$
+
+The boid accelerates if a is 1, and turns left for s = -1 and right for s = 1.
+</p>
+
+<h3>The Big Boid</h3>
+<img src="/bigboid.png">
+<p>
+A big boid's behaviour is relatively simple. It selects a random location on the screen and moves towards it until it reaches it. Then, it selects and new point and repeats. Long story short, the big boid moves around the screen randomly. 
+</p>
+
+<p>
+The important thing to note is, once the big boid comes into contact with with a boid, the boid is destroyed and respawns with new data.
+</p>
+
+<h2>Support Vector Machines</h2>
+
+<h3>Input Variables</h3>
+
+<p>
+Initially I spent a lot of time thinking about how to correlate the surroundings of the boid with actions that it takes. I decided that the factors which should influence the boids actions are the following:
+
+<ol>
+	<li> 
+		Self position ($x$ and $y$)
+	</li>
+
+	<li> 
+		Self velocity ($v_x$ and $v_y$)
+	</li>
+
+	<li> 
+		Self acceleration ($a_x$ and $a_y$)
+	</li>
+
+	<li>
+		Self rotation ($r$)
+	</li>
+
+	<li> 
+		Predator position ($X$ and $Y$)
+	</li>
+
+	<li>
+		Predator velocity ($v_X$ and $v_Y$)
+	</li>
+
+	<li> 
+		Displacement to the predator ($\delta X$ and $\delta X$)
+	</li>
+	
+	<li>
+		Average position of all boids ($\overline{x}$ and $\overline{y}$)
+	</li>
+	
+	<li>
+		Average velocity of all boids ($\overline{v_x}$ and $\overline{v_y}$)
+	</li>
+
+	<li>
+		Displacement to the average position of all boids ($\delta \overline{x}$ and $\delta \overline{y}$)
+	</li>
+	
+	<li>
+		Displacement to the average velocity of all boids ($\delta \overline{v_x}$ and $\delta \overline{v_y}$)
+	</li>
+</ol>
+
+In total, there are 21 variables. The last 4 items in the list are quite interesting because intuitively, it would benefit the boid to align itself with the herd. There are better chances of survival if you are doing what the group is doing. The original flocking algorithm that coined the term boids actually uses this concept. <a href="https://en.wikipedia.org/wiki/Boids"><strong>Here</strong></a> is a high level overview.
+
+</p>
+
+<h3>Genetically Encoding the AI</h3>
+
+<p>
+The simplest way I can think of to have a boid produce one decision based on the above variables is to take a linear combination of them. I will give each boid two randomly generated vectors; $\vec{g_1},\vec{g_2} \in R^{21}$ where $\vec{g_1}$ will decide acceleration and $\vec{g_2}$ will decide steering.
+</p>
+
+<p>
+After having taken some more Linear Algebra, I realized that this relation defined a hyperplane that seperated the input space into situations where the boid should turn left or turn right (or make any other decision).
+The decision at any given moment will be computed as follows:
+
+$$
+d \in D = (a, s)\\
+
+\vec{w} \text{ is the input vector:}\\
+\vec{w} = (x, y, v_x, v_y, a_x \ldots \delta \overline{v_x}, \delta \overline{v_y}) 
+\\
+a = \begin{cases}
+1 & \text{if} \langle \vec{g_1}, \vec{w} \rangle \ge 0 \\
+0 & \text{if} \langle \vec{g_1}, \vec{w} \rangle \lt 0
+\end{cases}
+\\
+s = \begin{cases}
+-1 & \text{if  } \langle \vec{g_2}, \vec{w} \rangle \lt 0 \\
+0 & \text{if  } \langle \vec{g_2}, \vec{w} \rangle = 0 \\
+1 & \text{if  } \langle \vec{g_2}, \vec{w} \rangle \gt 0 
+\end{cases}
+$$
+</p>
+
+<h3>Hyperplane Classifier SVM</h3>
+<p>
+After talking about this project with a friend who is quite well read in machine learning techniques, I was told that this was in fact a <a href="https://en.wikipedia.org/wiki/Support_vector_machine"><strong>Support Vector Machine</strong></a> that used hyperplane classifier. So it turns out that I independantly rediscovered SVMs. Maybe a bit of reinventing the wheel here but I was thoroughly amused and didn't regret spending the extra time. 
+<img src='/svm.png'>
+The above diagram is a simplified, lower dimensional example in $R^2$, hopefully it can be used to provide some intuition. Vectors such as $\vec{w}$ would be put on the vector space and the SVM will predict the optimal action that the boid should take. Out in the field, there are other ways to categorize the data points, including <a href="http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html"><strong>many non-linear variations</strong></a>. 
+</p>
+
+<h2>Training Data (Or the lack thereof)</h2>
+<p>
+Part of the job of the Support Vector Machine is to actually find the optimal hyperplane so that the prediction is as accurate as possible. It does this using some statistical methods and optimzation methods based on some given training data. There are a lot of software packages that can do this, in R, Python, etc. Generally speaking, the more training data, the better. 
+</p>
+
+<p>
+However, for the problem at hand there is no existing training data, nor is it possible to hand curate any data. This is where the genetic algorithms come in! Initial hyperplane data will be randomly generated, then gradually improved via a genetic algorithms approach by crossing over and mutating the normal vectors of the hyperplane (namely, $\vec{g_1}$ and $\vec{g_2}$, with other pairs of normal vectors).
+</p>
+
+<p>
+This method has shown signs of promise from the <a href="https://dl.dropboxusercontent.com/u/17828135/gen/gen.swf"><strong>previous genetic AI project</strong></a>.
+</p>
+
+<h2>Conclusion</h2>
+<p>
+This post concludes where I am right now with this project. Hopefully I will be able to run the entire algorithm within the next week, if school work goes well and my schedule allows. In the meantime, play around with the lighting in my <a ui-sref="shooter" ui-sref-active="active"><strong>game engine</strong></a>
 </p>
