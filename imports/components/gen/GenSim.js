@@ -77,7 +77,7 @@ function crossOver(a, b){
 	}else{
 		ret.geneString = b.geneString.slice(0, cPoint).concat(a.geneString.slice(cPoint,GENE_LENGTH));
 	}
-	//console.log(ret);
+
 	return ret;
 }
 
@@ -115,7 +115,6 @@ class BigBoid{
 	}
 
 	update(){
-
 		var diffx = this.targetPoint.x - this.transform.x;
 		var diffy = this.targetPoint.y - this.transform.y;
 
@@ -135,7 +134,6 @@ class BigBoid{
 
 		this.circle.x = this.transform.x;
 		this.circle.y = this.transform.y;
-
 	}
 
 	generateGraphics(){
@@ -174,12 +172,13 @@ class Boid{
 		this.transform.ax = Math.cos(this.transform.r) * _accel;
 		this.transform.ay = Math.sin(this.transform.r) * _accel;
 		this.transform.vr = _steer;
+
 	}
 
 	update(){
 
 		this.transform.update();
-		
+
 		this.triangle.x = this.transform.x;
 		this.triangle.y = this.transform.y;
 		this.triangle.rotation = Math.atan2(this.transform.vy,this.transform.vx);
@@ -193,10 +192,7 @@ class Boid{
 
 		this.steerGenes.trials ++;
 		this.steerGenes.highestFitness = ((this.steerGenes.highestFitness * (this.steerGenes.trials-1)) + this.fitness)/(this.steerGenes.trials);
-		console.log(this.steerGenes.highestFitness);
-		console.log(this.fitness);
-		console.log(this.steerGenes.trials);
-		console.log(this.steerGenes.highestFitness);
+
 		this.fitness = 0;
 
 		//this.steerGenes = new Genes(GENE_LENGTH);
@@ -208,7 +204,7 @@ class Boid{
 			var p1 = Math.floor(Math.random() * 10);
 			var p2 = Math.floor(Math.random() * 10);
 			this.steerGenes = crossOver(genesList[p1], genesList[p2]);
-			
+
 		}else{
 			this.steerGenes = new Genes(GENE_LENGTH);
 			genesList.push(this.steerGenes);
@@ -237,19 +233,19 @@ export class GenSim{
 
 		renderer = PIXI.autoDetectRenderer(400,300,{resolution:2});
 		renderer.backgroundColor = 0xcccccc;
-		
+
 		var htmlContainer = document.getElementById(_containerId);
 
 		htmlContainer.appendChild(renderer.view);
 
 		stage = new PIXI.Container();
-		
+
 		this.boids = [];
 		this.bigBoid = new BigBoid();
 
 		var i:int = 80;
 		while(i--){
-			var s = new Boid();
+			var s = new Boid(0,0);
 			this.boids.push(s);
 		}
 
@@ -257,10 +253,10 @@ export class GenSim{
     	overlay.setAttribute("style", "position: relative; z-index: 999; height: 600px; width: 800px; margin: auto; margin-top: -600px;");
     	htmlContainer.appendChild(overlay);
 
-		maxAccelSlider = makeSlider(0,0.5,0.025, "accel");
+		maxAccelSlider = makeSlider(0.01,0.5,0.025, "accel");
     	htmlContainer.appendChild(maxAccelSlider);
 
-    	maxStearSlider = makeSlider(0, Math.PI/32, Math.PI/1280, "steer");
+    	maxStearSlider = makeSlider(0.01, Math.PI/32, Math.PI/1280, "steer");
     	htmlContainer.appendChild(maxStearSlider);
 
     	simSpeedSlider = makeSlider(0, 20, 1,'step');
@@ -286,22 +282,22 @@ export class GenSim{
 	update(){
 		requestAnimationFrame(this.update.bind(this));
 
-		MAX_ACCEL = maxAccelSlider.slider.value;
-		MAX_STEER = maxStearSlider.slider.value;
-		SIM_SPEED = simSpeedSlider.slider.value;
+		MAX_ACCEL = parseFloat(maxAccelSlider.slider.value);
+		MAX_STEER = parseFloat(maxStearSlider.slider.value);
+		SIM_SPEED = parseFloat(simSpeedSlider.slider.value);
+
+		debugger;
 
 		var i = SIM_SPEED;
 
 		var deathcount = 0;
-
-		
 
 		while(i--){
 
 			var topID = 0;
 			var m = -1;
 			while(m++ <10){
-				if(genesList[m].trials > 30){
+				if(false){//if(genesList[m].trials > 30){
 					topID = genesList[m].id;
 					break;
 				}
@@ -349,24 +345,21 @@ export class GenSim{
 					];
 
 					var steerctr = dotProduct(input, s.steerGenes.geneString);
-					//console.log(steerctr);
+
 					var steerval;
 					//{
 						steerval = steerctr;
 					//}
 
-				s.control(/*dotProduct(input, s.accelGenes)<0?0:*/MAX_ACCEL, steerval);
-
+				s.control(/*	(input, s.accelGenes)<0?0:*/MAX_ACCEL, steerval);
 
 				s.update();
+
 				// wrap them around
 				wrap(s);
+
 				//s.transform.x = clamp(s.transform.x, 0, 400);
 				//s.transform.y = clamp(s.transform.y, 0, 300);
-
-				//console.log(s.transform.distance(this.bigBoid.transform));
-
-				
 
 				s.triangle.scale.x = s.triangle.scale.y = 1;
 				//if(this.genesList.length >= 5)
@@ -402,13 +395,11 @@ export class GenSim{
 			});
 		}
 
-		
-
 		this.top = genesList.slice(0,20);
-		//console.log(this.top);
+
 		i =20;
 		while(i--){
-			textList[i].text = ('id:' + this.top[i].id + " | " + (this.top[i].highestFitness/60).toFixed(2) + " secs");
+			//textList[i].text = ('id:' + this.top[i].id + " | " + (this.top[i].highestFitness/60).toFixed(2) + " secs");
 		}
 
 		renderer.render(stage);
