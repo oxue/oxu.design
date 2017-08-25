@@ -9,7 +9,7 @@ import art from '../imports/components/art/art';
 import visitors from '../imports/components/visitors/visitors';
 
 
-import '../imports/components/home/homeCtrl.js';
+import '../imports/components/home/homeCtrl.jsx';
 import '../imports/components/gen/genCtrl.js';
 
 new WOW().init();

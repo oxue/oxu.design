@@ -1,6 +1,12 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 
+import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { render } from 'react-dom';
+
+import Summary from '../../ui/summary.jsx';
+
 class Particle{
 	constructor(x, y, r, max) {
 		this.x = x;
@@ -15,6 +21,9 @@ export default angular.module('homeCtrlModule',[angularMeteor]).controller('Home
 	var inter = null;
 
 	$scope.init = function(){
+
+		//render(<Summary />, document.querySelector('.summary-target'));
+
 		console.log("Hello");
 
 		var elem = document.querySelector('.grid');

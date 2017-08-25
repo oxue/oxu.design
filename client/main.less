@@ -126,13 +126,15 @@ ul{
 }
 
 .banner{
-    background: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)),url("purple.jpg");
-    background-size: 100% 100%;
+    background: url("purple.jpg");
+    background-size: cover;
+    background-position: center;
 
     position: relative;
     width: 100%;
     top: 0;
-    min-height: 600px;
+    min-height: 100vh;
+    display: table;
 
     .banner-content{
         height: 10em;
@@ -142,9 +144,10 @@ ul{
         margin: 0;
         margin-left: 20px;
         margin-right: 20px;
-        padding-top: 10vh;
         height: 100vh;
         max-height: 400px;
+        display: table-cell;
+        vertical-align: middle;
 
         //text
         font-family: "Droid Serif","serif";
@@ -176,7 +179,9 @@ ul{
                 //float: left;
                 font-size: 15px;
                 display: inline-block;
-                width: 200px;
+                //width: 200px;
+                padding-left: 20px;
+                padding-right: 20px;
                 height: 50px;
                 margin: 10px;
                 vertical-align: middle;
@@ -188,6 +193,93 @@ ul{
             div:hover{
                 background-color: rgba(0,0,0,0.2);
             }
+        }
+    }
+}
+
+.summary {
+    list-style: none;
+    padding: 0;
+    margin: 0; 
+    width: 100%;
+
+    
+}
+
+.summary-card {
+    padding: 50px;
+    margin-bottom: 20px;
+    display: list-item;
+    margin-bottom: 0px;
+    margin: auto;
+    min-height: 100px;
+    color: #222;
+    border-bottom: 1px solid #ccc;
+    font-family: sans-serif;
+    font-weight: 100;
+
+    strong { font-weight: 400 }
+
+    h1 {
+        //font-family: sans-serif;
+        color: #222;
+        font-weight: 100;
+
+        font-size: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        text-align: center;
+
+    }
+
+    h1:after{
+        content: '';
+        margin: auto;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 50px;
+        border-bottom: 3px solid purple;
+        width: 70px;
+    }
+
+    p.centered {
+        line-height: 1.5em;
+        clear: left;
+        max-width: 800px;
+        margin: auto;
+        text-align: center;
+    }
+
+    .edu-column-container {
+        width: 80%;
+        max-width: 800px;
+        margin:auto;
+        margin-bottom: 20px;
+        overflow: auto;
+        margin-bottom: 30px;
+    }
+
+    .edu-column {
+        width: 33%;
+        display: inline-block;
+        float: left;
+        padding: 10px;
+        text-align: center;
+        box-sizing: border-box;
+        font-size: 12px;
+
+        img {
+            max-height: 80px;
+            filter: grayscale(100%);
+            margin-bottom: 10px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .edu-column {
+            width: 100%;
+            display: inline-block;
+            float: left;
         }
     }
 }
